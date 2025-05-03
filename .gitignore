@@ -1,0 +1,46 @@
+# ---- Windows 系統雜訊 ----
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+# ---- PowerShell 相關 ----
+*.ps1~            # 編輯器備份
+*.ps1.save        # VS Code 斷電恢復檔
+*.ps1.bak
+*.psd1
+*.psm1
+
+# ---- 編譯產物（PS2EXE）----
+*.exe             # 編譯好的 Toggle-ICS.exe
+*.ps2             # PS2EXE 中繼檔
+.release/
+build/
+dist/
+
+# ---- 圖示 / 二進位資源 ----
+*.ico
+*.png
+*.icns
+
+# ---- 開發工具設定 ----
+.vscode/
+.idea/
+*.code-workspace
+
+# ---- 日誌 / 中間檔 ----
+*.log
+*.tmp
+*.bak
+*.swp
+
+# ---- 壓縮檔、安裝包 ----
+*.zip
+*.7z
+*.rar
+
+# ---- macOS / Linux 產物 (外接硬碟時常見) ----
+._*
+.AppleDouble
+.LSOverride
