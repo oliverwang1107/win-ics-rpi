@@ -1,37 +1,40 @@
-name: Build Toggle-ICS.exe
+name: Build & Release EXE
 
-# 什麼情況觸發？這裡示範：push 到 dev 或 main 就打包
+# 只有打符合 v* 的 tag 才執行
 on:
   push:
-    branches: [ main, dev ]
-  workflow_dispatch:        # 允許手動點按執行
+    tags:
+      - 'v*'
+
+permissions:           # 讓 GITHUB_TOKEN 能夠發 Release、上傳
+  contents: write
+  packages: write
 
 jobs:
   build:
-    runs-on: windows-latest   # 使用 GitHub 免費的 Windows Server 2022 Runner
+    runs-on: windows-latest
 
     steps:
-    # 1️⃣ 取最新程式碼
-    - name: Checkout
-      uses: actions/checkout@v4
+    # 1. 取程式碼
+    - uses: actions/checkout@v4
 
-    # 2️⃣ 安裝 ps2exe 模組（從 PSGallery）
+    # 2. 安裝 ps2exe
     - name: Install ps2exe
       shell: powershell
-      run: |
-        Install-Module ps2exe -Scope CurrentUser -Force -Confirm:$false   # :contentReference[oaicite:0]{index=0}
+      run: Install-Module ps2exe -Scope CurrentUser -Force -Confirm:$false
 
-    # 3️⃣ 編譯 .ps1 → .exe（無主控台、內建 UAC）
-    - name: Compile PowerShell to EXE
+    # 3. 編譯 EXE
+    - name: Compile Toggle-ICS.exe
       shell: powershell
       run: |
         Invoke-PS2EXE -InputFile Toggle-ICS.ps1 `
                       -OutputFile Toggle-ICS.exe `
                       -NoConsole -RequireAdmin
 
-    # 4️⃣ 上傳產物，下載網址會出現在 run 畫面
-    - name: Upload artifact
-      uses: actions/upload-artifact@v4     # :contentReference[oaicite:1]{index=1}
+    # 4. 建立 / 更新 Release 並附檔
+    - name: Upload to Release
+      uses: softprops/action-gh-release@v1
       with:
-        name: Toggle-ICS
-        path: Toggle-ICS.exe
+        files: Toggle-ICS.exe
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
