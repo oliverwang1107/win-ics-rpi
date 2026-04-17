@@ -29,6 +29,9 @@ dist/
 .idea/
 *.code-workspace
 
+# ---- 本機設定（每台電腦不同）----
+ics-config.json
+
 # ---- 日誌 / 中間檔 ----
 *.log
 *.tmp
